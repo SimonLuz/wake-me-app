@@ -36,7 +36,7 @@ body {
     font-weight: 300;
     font-size: 1.6rem;
     box-sizing: inherit;
-    background-color: var(--color-background);
+    background-color: #eee;
     height: 100vh;
     width: 100vw;
 }
@@ -49,7 +49,7 @@ body {
     width: var(--main-container-width);
     height: auto;
     margin: 100px;
-/*    background: var(--color-background);*/
+    background: var(--color-background);
     box-sizing: inherit;
     overflow: hidden;
 }
@@ -58,13 +58,14 @@ body {
 @media screen and (min-width: 600px) {
     
     :root {
-        --color-background: orangered;
+/*        --color-background: orangered;*/
         --main-container-width: 375px;
     }
     
     body {
         box-sizing: border-box;
-/*        background-color: var(--color-background);*/
+/*        background-color: var(--color-backgound);*/
+/*        background-color: #eee;*/
     }
     
     .container {
