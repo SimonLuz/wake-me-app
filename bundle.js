@@ -38,10 +38,13 @@ let pubsub = (function() {
 })();
 
 
+
 // ******************************************************************
 // // JQuery - SLICK library for the "hour" slider
 // ******************************************************************
-
+import { moveHourSlider } from './js/slickMod.js';
+moveHourSlider();
+/*
 let moveHourSlider = (function() {
 
     $('.center').slick({
@@ -80,6 +83,7 @@ let moveHourSlider = (function() {
     
 })();
 
+*/
 
 
 // ******************************************************************
@@ -198,7 +202,7 @@ let dataModule = (function() {
         // calc future time when in "in" mode
         calcFutureTimeIn: function(time, ampm) {
             
-            let futureTotal, futureTime;
+//            let futureTime;
             let amPm = ampm;
             let timeArr = time; // [2, 30]
             
@@ -213,7 +217,7 @@ let dataModule = (function() {
         
         // calc future time when in "at" mode
         calcFutureTimeAt: function(time, ampm) {
-            let futureTime;
+            let futureTotal, futureTime;
             let amPm = ampm;
             let timeArr = time; // [2, 30]
                 
@@ -477,6 +481,7 @@ let controllerModule = (function(dataMod, UIMod) {
     let atOrIn; 
     let amOrPm = "am"; 
     let displayedTime;
+    let futureTime;
     
     // Get DOM elements from UI Module
     let DOMElements = UIMod.DOMParts();
@@ -559,6 +564,7 @@ let controllerModule = (function(dataMod, UIMod) {
     
     // Set/display hours & minutes 
     let setTimeDisplay = function(event) {
+        
         
         // Get time/label from the sliders
         let clickedTime = UIMod.getClickedTime(event);
