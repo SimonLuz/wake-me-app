@@ -1,6 +1,11 @@
 // ******************************************************************
-// PubSub Module
+// PubSub Module 
 // ******************************************************************
+// ??? Should we import IIFEs or functions that we call ???
+
+import { pubsub } from './js/pubSub.js';
+
+/*
 let pubsub = (function() {
     
     return {
@@ -36,6 +41,7 @@ let pubsub = (function() {
     }
         
 })();
+*/
 
 
 
