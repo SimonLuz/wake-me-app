@@ -42,13 +42,12 @@ body {
 }
 
 
-
-
 /****************** PHONE CONTAINER *****************/
 .container {
-    width: var(--main-container-width);
-    height: auto;
-    margin: 100px;
+/*    width: var(--main-container-width);*/
+    width: 100vw;
+    height: 100vh;
+/*    margin: 100px;*/
     background: var(--color-background);
     box-sizing: inherit;
     overflow: hidden;
