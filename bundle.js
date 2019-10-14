@@ -170,7 +170,7 @@ const moveMinuteSlider = (function() {
 */
 
 // ***********************************************************************************
-// DATA Module
+// DATA Module - module that handles data processing 
 //************************************************************************************
 let dataModule = (function() {
     
@@ -269,7 +269,7 @@ let dataModule = (function() {
 
 
 // ***********************************************************************************
-// User Interface Module
+// User Interface Module - handles all UI interaction
 //************************************************************************************
 
 let UIModule = (function() {
@@ -493,10 +493,10 @@ let controllerModule = (function(dataMod, UIMod) {
     let futureTime;
     
     // Get DOM elements from UI Module
-    let DOMElements = UIMod.DOMParts();
+    const DOMElements = UIMod.DOMParts();
    
     // set up eventListeners
-    let bindEvents = function() {
+    const bindEvents = function() {
         document.querySelector("body").onload = updateClock(); 
         DOMElements.radioBtnBox.addEventListener("click", selectRadioBtn);
         DOMElements.setTimeBox.addEventListener("click", setTimeDisplay);
@@ -505,7 +505,7 @@ let controllerModule = (function(dataMod, UIMod) {
     
     
     // Set current time & display clock on top
-    let updateClock = function() {
+    const updateClock = function() {
 
         // get current time hh:mm am/pm format
         let currentTime = dataMod.getTimeNow();
@@ -550,7 +550,7 @@ let controllerModule = (function(dataMod, UIMod) {
        
     
     // Set AM / PM when in "at" mode 
-    let selectAmPm = function(event) {
+    const selectAmPm = function(event) {
         
         // Get am or pm from UI
         let getAmPm = UIMod.retrieveAmPm(event);
