@@ -1,0 +1,411 @@
+/*https://codepen.io/hansmaad/pen/zBdzxp*/
+:root {
+    --main-container-width: 100vw;
+    
+    --device-width: 375px;
+    
+    --margin-time-small: 5px;
+    --margin-box-small: 10px;
+    --margin-box-medium: 20px;
+    --margin-box-large: 30px;
+    
+    --color-background: #4a4a4a;
+    --color-grey-light: #7e7e7e;
+    --color-grey-medium: #6a6a6a;
+    --color-grey-dark: #5a5a5a;
+    
+}
+
+
+
+*,
+*::after,
+*::before {
+    margin: 0;
+    padding: 0;
+    box-sizing: inherit;
+}
+
+html {
+    font-size: 62.5%;
+}
+
+body {
+    font-family: "Open Sans";
+    color: #fff;
+    font-weight: 300;
+    font-size: 1.6rem;
+    box-sizing: inherit;
+    background-color: var(--color-background);
+    height: 100vh;
+    width: 100vw;
+}
+
+
+
+
+/****************** PHONE CONTAINER *****************/
+.container {
+    width: var(--main-container-width);
+    height: auto;
+    margin: 100px;
+/*    background: var(--color-background);*/
+    box-sizing: inherit;
+    overflow: hidden;
+}
+
+
+@media screen and (min-width: 600px) {
+    
+    :root {
+        --color-background: orangered;
+        --main-container-width: 375px;
+    }
+    
+    body {
+        box-sizing: border-box;
+/*        background-color: var(--color-background);*/
+    }
+    
+    .container {
+        height: 667px;
+        margin: 100px;
+        border: 15px solid black;
+        border-top: 35px solid black;
+        border-bottom: 55px solid black;
+        border-radius: 20px;
+        box-sizing: content-box; 
+    }
+
+    
+}
+
+
+
+/****************** TOP *****************/
+
+.date-time {
+    padding-top: 5px;   
+    text-align: center;
+}
+
+.date-time__display {
+    display: inline-block;
+    font-size: 1.5rem;
+}
+
+.title {
+    display: block;
+    margin: 1.5rem 1.5rem 3rem 1.5rem;
+    font-style: italic;
+    font-size: 2rem;
+    text-align: center;
+}
+
+
+/****************** RADIO & AM PM CONTAINER *****************/
+.time-type-container {
+    margin-bottom: var(--margin-box-medium);
+}
+
+
+.radio-btn-box {
+    width: 100%;;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    margin-bottom: var(--margin-box-small);
+}
+
+.radio__at,
+.radio__in {
+    width: 30%;
+    height: 2rem;
+    display: flex;
+    justify-content: center;
+    position: relative;
+}
+
+.radio__at label,
+.radio__in label {
+    line-height: 3rem;
+    font-size: 2rem;
+    padding-right: .8rem;
+    align-self: center;    
+}
+
+.radio__in input, 
+.radio__at input {
+    width: 2rem;
+    height: 2rem;
+    align-self: center;
+    z-index: 10;
+}
+
+.radio-span {
+    align-self: center;
+    width: 1.3rem;
+    height: 1.3rem;
+    background-color: white;
+    border-radius: 50%;
+    transform: translateX(-1.4rem);
+    z-index: 0;
+}
+
+[class*="radio"] input:checked + .radio-span {
+    animation: ripple 0.2s linear;
+}
+    
+.am-pm {
+    display: flex;
+    margin-left: 23%;    
+    height: 0px;
+    opacity: 0;
+    transition: all .4s;
+    
+}
+.am-pm__active {
+    height: 3rem;
+    opacity: 1;
+}
+
+
+@keyframes ripple {
+    
+    0% {
+        box-shadow: 0px 0px 0px 1px rgba(255, 255, 255, 0);
+    }
+    
+    50% {
+        box-shadow: 0px 0px 0px 2rem rgba(255, 255, 255, .1);
+    }
+    
+    100% {
+        box-shadow: 0px 0px 0px 2rem rgba(255, 255, 255, 0);
+    }
+    
+}
+
+/******************** AM PM on-off SWITCH ******************/
+/* MOBILE READY CODE */
+
+.am-pm {
+    width: var(--device-width);
+}
+
+.am-pm__box {
+    width: auto;
+}
+
+.am-pm__radio-box {
+    position: relative;
+    display: inline-block;
+    margin: 0 .3rem;
+    width: 4rem;
+    height: 2rem;
+    background: #ccc;
+    border-radius: 2rem;
+    top: .2rem;
+}
+
+.am-pm__radio-box input {
+    display: inline-block;
+    height: 1.5rem;
+    width: 1.5rem;
+    opacity: 0;
+}
+
+.am-pm__radio-box input:first-child {
+    margin-right: .5rem;
+}
+
+.am-pm__box label {
+    display: inline-block;
+    line-height: 2rem;
+    font-size: 1.5rem;
+}
+
+.toggle-outside {
+    display: inline-block;
+    position: absolute;
+    background-color: var(--color-grey-medium);
+    margin: .1rem .2rem .1rem .2rem;
+    width: 1.8rem;
+    height: 1.8rem;
+    left: 0rem;
+    top: 0;
+    border-radius: 100%;
+    transition: all .3s;
+}
+
+.toggle-outside.active {
+    left: 45%;
+}
+
+
+
+/****************** HOURS Slider *****************/
+.set-time__hours {
+    margin-bottom: var(--margin-box-medium);
+}
+
+.set-time__hour-item {
+/*    border: 1px solid black;*/
+    height: 5rem;
+    margin: .5rem;
+    text-align: center;
+    background-color: var(--color-grey-light);
+    border-radius: .3rem;
+/*    opacity: .5;*/
+}
+
+.set-time__hour-item h3 {
+    line-height: 5rem;
+    font-size: 2.5rem;
+    font-weight: 400;
+}
+
+
+/****************** Time Display Container ************/
+.time-display {
+    position: relative;
+    margin-bottom: var(--margin-box-medium);
+}
+
+.time-display__prep,
+.time-display__ampm {
+    opacity: 0;
+    transition: all .4s; 
+}
+
+.time-display__prep.display,
+.time-display__ampm.display {
+    opacity: 1;
+}
+
+/****************** Display-TIME BOX *****************/
+.time-display__time-box {
+    text-align: center;
+    margin: 1rem;
+/*    display: flex;*/
+    justify-content: center;
+}
+
+.time-display__hour, 
+.time-display__minute,
+.time-display__colon {
+    font-size: 5.5rem;
+    letter-spacing: 2px;
+}
+
+.time-display__prep {
+    font-size: 2rem;
+    padding-right: .5rem;
+}
+
+
+.time-display__ampm {
+     text-transform: uppercase;
+}
+
+
+
+
+/****************** Calc-TIME BOX *****************/
+.time__calc-box {
+    position: absolute;
+    top: -.7rem;
+    right: 0;
+    transform: translateX(100%);
+    font-size: 2.5rem;
+    text-align: left;
+    padding: .5rem;
+    text-align: center;
+    background-color: var(--color-grey-dark);
+    border-radius: .3rem;
+    transition: transform .4s;
+    transition-delay: .4s;
+}
+
+.time__calc-box.display {
+    transform: translateX(0);
+}
+
+.time-calc__prep,
+.time-calc__ampm {
+    display: block;
+    font-size: 1.5rem;
+}
+
+.time-calc__hour {
+    display: inline-block;
+    border-radius: .3rem;
+    background-color: var(--color-grey-medium);
+}
+
+.time-calc__ampm {
+    opacity: 0;
+    transition: all .4s;
+}
+
+.time-calc__ampm.active {
+    opacity: 1;
+}
+
+
+/****************** SET TIME MINUTES *****************/
+.slider-minutes {
+    display: flex;
+    width: 1100px;
+    transition: transform .4s;
+}
+
+.set-time__minute-item {
+    display: block;
+    height: 3rem;
+    width: calc((-2 * var(--margin-time-small)) + (var(--main-container-width) / 5)); /* 65px */
+    background-color: var(--color-grey-light);
+    border-radius: .3rem;
+    margin-left: var(--margin-time-small); /* 5px */
+    margin-right: var(--margin-time-small); /* 5px */
+    line-height: 3rem;
+    text-align: center;
+/*    opacity: .5;*/
+/*    transition: opacity .5s;*/
+}
+
+
+/****************** WEEKDAYS  *****************/
+.weekdays {
+    display: flex;
+    justify-content: space-around;
+    margin-top: var(--margin-box-medium);
+}
+
+.day {
+    padding: 2px .5rem;
+    font-size: 1.5rem;
+    background-color: var(--color-grey-light);
+    border-radius: .3rem;
+/*    opacity: .6;*/
+    transform: translateX(calc(-1*var(--main-container-width)));
+    transition: transform .4s;
+    transition-delay: .7s;
+}
+
+.day.active {
+    transform: translateX(0);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/****************** PHONE CONTAINER *****************/

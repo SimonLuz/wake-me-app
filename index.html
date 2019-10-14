@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>WakeMeUp</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600&display=swap" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="slick/slick.css"/>
+<!--        <link rel="stylesheet" type="text/css" href="slick/slick-theme.css"/>-->
+        <link type="text/css" rel="stylesheet" href="style.css">
+    </head>
+    
+    <body>
+        <div class="container">
+            <div class="date-time">
+                <div class="date-time__display">10:25</div>
+            </div>   
+            <header class="title">
+                <div class="tittle__tag">WakeMeApp</div>
+            </header>
+            
+            <div class="time-type-container">
+                <div class="radio-btn-box">
+                    <div class="radio__at">
+                        <label for="radio-at" name="radio-btn">&#64;</label>
+                        <input type="radio" name="radio-btn" id="radio-at" class="input-at">
+                        <span class="radio-span"></span>
+
+                    </div>
+                    <div class="radio__in">
+                        <label for="radio-in" name="radio-btn" >in</label> 
+                        <input type="radio" name="radio-btn" id="radio-in" class="input-in">
+                        <span class="radio-span"></span>
+                    </div>
+                </div>
+                
+                <div class="am-pm">
+                    <div class="am-pm__box switch">
+                        <label for="radio-a">AM</label>
+                        <div class="am-pm__radio-box">
+                            <input type="radio" id="radio-a" name="AmPmSwitch" value="am">
+                            <input type="radio" id="radio-b" name="AmPmSwitch" value="pm" checked>
+                            <span class="toggle-outside">
+                            <span class="toggle-inside"></span>
+                        </span>
+                        </div>
+                        <label for="radio-b">PM</label>
+                        
+                    </div> 
+                </div>
+                
+            </div>
+ 
+            
+            <div class="content">
+                <div class="set-time">
+                    <div class="set-time__hours">
+                        <div class="set-time__scene" data-slick='{"slidesToShow": 3, "slidesToScroll": 1}'>
+                            <div class="set-time__hour-item" ><h3 label="hour">1</h3></div>
+                            <div class="set-time__hour-item" ><h3 label="hour">2</h3></div>
+                            <div class="set-time__hour-item" ><h3 label="hour">3</h3></div>
+                            <div class="set-time__hour-item" ><h3 label="hour">4</h3></div>
+                            <div class="set-time__hour-item" ><h3 label="hour">5</h3></div>
+                            <div class="set-time__hour-item" ><h3 label="hour">6</h3></div>
+                            <div class="set-time__hour-item" ><h3 label="hour">7</h3></div>
+                            <div class="set-time__hour-item" ><h3 label="hour">8</h3></div>
+                            <div class="set-time__hour-item" ><h3 label="hour">9</h3></div>
+                            <div class="set-time__hour-item" ><h3 label="hour">10</h3></div>
+                            <div class="set-time__hour-item" ><h3 label="hour">11</h3></div>
+                            <div class="set-time__hour-item" ><h3 label="hour">12</h3></div>   
+                        </div>
+                    </div>
+                    
+                    <div class="time-display">
+                        <div class="time-display__time-box">
+                            <span class="time-display__prep">&#64;</span>   
+                            <span class="time-display__hour" label="hour">00</span>
+                            <span class="time-display__colon">:</span>
+                            <span class="time-display__minute" label="minute">00</span>
+                            <span class="time-display__ampm">AM</span>   
+                        </div>
+
+                        <div class="time__calc-box">
+                            <span class="time-calc__prep">at</span>   
+                            <div class="time-calc__hour" id="hour"></div>
+                            <span class="time-calc__ampm" id="ampm">AM</span> 
+                        </div>    
+                    </div>
+                    
+                    
+                    
+                    <div class="set-time__minutes">
+                        <div class="slider-minutes">
+                            <div class="set-time__minute-item" label="minute">5</div>
+                            <div class="set-time__minute-item" label="minute">10</div>
+                            <div class="set-time__minute-item" label="minute">15</div>
+                            <div class="set-time__minute-item" label="minute">20</div>
+                            <div class="set-time__minute-item" label="minute">25</div>
+                            <div class="set-time__minute-item" label="minute">30</div>
+                            <div class="set-time__minute-item" label="minute">35</div>
+                            <div class="set-time__minute-item" label="minute">40</div>
+                            <div class="set-time__minute-item" label="minute">45</div>
+                            <div class="set-time__minute-item" label="minute">50</div>
+                            <div class="set-time__minute-item" label="minute">55</div>    
+                        </div>
+                        
+                    </div>
+                    
+                    <div class="weekdays">
+                        <div class="day">Sun</div>
+                        <div class="day">Mon</div>
+                        <div class="day">Tue</div>
+                        <div class="day">Wed</div>
+                        <div class="day">Thur</div>
+                        <div class="day">Fri</div>
+                        <div class="day">Sat</div>
+                    </div>
+                    
+                </div>
+                <div class="move-time">
+                    <div class="move-time__hours"></div>
+                    <div class="move-time__minutes"></div>
+                </div>
+                
+               <!-- <div class="am-pm-box switch">
+                    <label for="radio-a">AM</label>
+                    <input type="radio" id="radio-a" name="AmPmSwitch" value="am" >
+                    <input type="radio" id="radio-b" name="AmPmSwitch" value="pm">
+                    <label for="radio-b">PM</label>
+                    <span class="toggle-outside"><span class="toggle-inside"></span></span>
+                </div> -->
+            </div>    
+        </div>   
+        
+<!--
+       
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+-->
+    <script type="text/javascript" src="slick/slick.min.js"></script>
+
+    <script src="script.js"></script>
+    </body>
+
+</html>
