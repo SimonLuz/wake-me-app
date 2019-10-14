@@ -89,13 +89,16 @@ let moveHourSlider = (function() {
 // ******************************************************************
 // "Vanilla" JavaScript for the "minute" slider - own code
 // ******************************************************************
+import { moveMinuteSlider } from './js/minuteSlider.js';
+moveMinuteSlider();
 
-let moveMinuteSlider = (function() {
+/*
+const moveMinuteSlider = (function() {
     let direction, limitTest, singleDistance, distToMove, transXMax, transXMin;
     
     const minutes = document.querySelector(".set-time__minutes");
-    let sliderMinutes = document.querySelector(".slider-minutes");
-    let minuteItems = document.querySelectorAll(".set-time__minute-item");
+    const sliderMinutes = document.querySelector(".slider-minutes");
+    const minuteItems = document.querySelectorAll(".set-time__minute-item");
     let startX = 0;
     let startY = 0;
     let endX = 0;
@@ -135,7 +138,7 @@ let moveMinuteSlider = (function() {
             sliderMinutes.style.transform = `translateX(${limitRight}px)`;
             totalDistance = limitRight;
         }
-        
+        */
         // Slider MINUTES opacity
        /* setTimeout(function() {
             minuteItems.forEach(el => el.style.opacity = .5);
@@ -154,11 +157,11 @@ let moveMinuteSlider = (function() {
         } else {
             sliderMinutes.style.transform = `translateX(0px)`;
         }
-        */
+        
     
     })
 })();
-
+*/
 
 // ***********************************************************************************
 // DATA Module
@@ -267,7 +270,7 @@ let UIModule = (function() {
     
     let labelClass;
     
-    let getDOM = {
+    const getDOM = {
         timeNow: document.querySelector(".date-time__display"), //
         radioBtnBox: document.querySelector(".radio-btn-box"),
         amPmBox: document.querySelector(".am-pm"),
