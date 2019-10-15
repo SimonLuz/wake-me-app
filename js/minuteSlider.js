@@ -12,7 +12,7 @@ export const moveMinuteSlider = () => {
     
     minutes.addEventListener("touchstart", function(event) {
         startX = parseInt(event.changedTouches[0].clientX);
-        //        minuteItems.forEach(el => el.style.opacity = 1);
+//                minuteItems.forEach(el => el.style.opacity = 1);
     })
 
     
@@ -25,15 +25,17 @@ export const moveMinuteSlider = () => {
         let touchMove = direction === "left" ? distX * -1 : distX;
         
         sliderMinutes.style.transform = `translateX(${ touchMove + totalDistance}px)`;
-        
     })
     
     
     minutes.addEventListener("touchend", function(event) {
         let endX = parseInt(event.changedTouches[0].clientX);
         singleDistance = endX - startX;
+        const sliderWidth = sliderMinutes.offsetWidth;
+        const itemWidth = minuteItems[0].offsetWidth;
         let limitLeft = 0;
-        let limitRight = - 450;
+        let limitRight = - (sliderWidth - (5 * (itemWidth + 10)));
+        
         totalDistance += singleDistance;
         
         if (totalDistance > limitLeft) {
