@@ -42,6 +42,22 @@ body {
 }
 
 
+/* class for initial app state before selecting 'in' or 'at' mode */
+.opaque {
+  opacity: 0.2;
+}
+
+
+/*class with colors for 'at' and 'in' modes */
+.color-at {
+  color: #00ff00;
+}
+
+.color-in {
+  color: #ff00bf;
+}
+
+
 /****************** PHONE CONTAINER *****************/
 .container {
 /*    width: var(--main-container-width);*/
@@ -190,9 +206,6 @@ body {
 
 /***********************************************************/
 
-.opaque {
-  opacity: 0.2;
-}
 
 
 

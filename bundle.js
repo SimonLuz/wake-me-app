@@ -355,6 +355,8 @@ let UIModule = (function() {
         // Toggle "at" or "in" on main display & future time display
         displayAtOrIn: function(label) {
 
+          console.log("DISPLAY", label)
+          
             let getPrepos = label.split("-");
             let atOrIn = getPrepos[1] === "in" ?  "at" : "in";
             let dispAmPm = getDOM.displayTimeBox[getDOM.displayTimeBox.length - 1];
