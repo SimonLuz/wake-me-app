@@ -225,8 +225,6 @@ let dataModule = (function() {
         
         
         // calc future time when in "at" mode
-      
-      // BUG: fix when time = undefined and toggle AM PM switch is switched
         calcFutureTimeAt: (time, ampm) => {
             let futureTotal, futureTime;
             let amPm = ampm;
@@ -267,8 +265,6 @@ let dataModule = (function() {
             } else {
               return;
             }
-            
-            
         }
     }
     
@@ -475,13 +471,19 @@ let UIModule = (function() {
               let splitTime = futureTime.split(" ");
             
               getDOM.futureTimeDisp.innerHTML = splitTime[0];
-
+              
+              // a quick 'hack' to style 'AM' vs 'min h' in the future time display
               if (labelClass === "input-in") {
                   getDOM.ampmFuture.innerHTML = splitTime[1];
                   getDOM.ampmFuture.classList.add("active");
+                  getDOM.ampmFuture.style.opacity = 0.9;
 
               } else if (labelClass === "input-at") {
-                  getDOM.ampmFuture.classList.remove("active");
+//                  getDOM.ampmFuture.classList.remove("active");
+                  getDOM.ampmFuture.classList.add("active");
+                  getDOM.ampmFuture.style.fontSize = `12px`;
+                  getDOM.ampmFuture.style.opacity = 0.5;
+                  getDOM.ampmFuture.innerHTML = `&nbsp h &nbsp &nbsp &nbsp min`;
               }
 
             }
