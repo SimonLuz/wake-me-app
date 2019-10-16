@@ -29,8 +29,10 @@ export const moveMinuteSlider = () => {
     
     
     minutes.addEventListener("touchend", function(event) {
-        let endX = parseInt(event.changedTouches[0].clientX);
+        
+      let endX = parseInt(event.changedTouches[0].clientX);
         singleDistance = endX - startX;
+      
         const sliderWidth = sliderMinutes.offsetWidth;
         const itemWidth = minuteItems[0].offsetWidth;
         let limitLeft = 0;

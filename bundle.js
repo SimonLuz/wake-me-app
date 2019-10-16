@@ -49,7 +49,7 @@ let pubsub = (function() {
 // // JQuery - SLICK library for the "hour" slider
 // ******************************************************************
 import { moveHourSlider } from './js/slickMod.js';
-moveHourSlider();
+//moveHourSlider();
 /*
 let moveHourSlider = (function() {
 
@@ -96,7 +96,7 @@ let moveHourSlider = (function() {
 // "Vanilla" JavaScript for the "minute" slider - own code
 // ******************************************************************
 import { moveMinuteSlider } from './js/minuteSlider.js';
-moveMinuteSlider();
+//moveMinuteSlider();
 
 /*
 const moveMinuteSlider = (function() {
@@ -225,41 +225,49 @@ let dataModule = (function() {
         
         
         // calc future time when in "at" mode
-        calcFutureTimeAt: function(time, ampm) {
+      
+      // BUG: fix when time = undefined and toggle AM PM switch is switched
+        calcFutureTimeAt: (time, ampm) => {
             let futureTotal, futureTime;
             let amPm = ampm;
             let timeArr = time; // [2, 30]
                 
-            // Calc current time to millitary
-            let nowMillitary = new Date().toLocaleTimeString(navigator.language, {hour12: false, hour: "2-digit", minute: "2-digit"}).split(":");
+            if (timeArr) {
+              // Calc current time to millitary
+              let nowMillitary = new Date().toLocaleTimeString(navigator.language, {hour12: false, hour: "2-digit", minute: "2-digit"}).split(":");
 
-            // Calc wake-up time to millitary
-            let futureMillitary = amPm === "am" ? `${timeArr[0]}:${timeArr[1]}`.split(":") : `${timeArr[0] + 12}:${timeArr[1]}`.split(":");
+              // Calc wake-up time to millitary
+              let futureMillitary = amPm === "am" ? `${timeArr[0]}:${timeArr[1]}`.split(":") : `${timeArr[0] + 12}:${timeArr[1]}`.split(":");
 
-            // Change current millitary to milliseconds
-            let nowMillitaryToMs = nowMillitary[0] * 3600000 + nowMillitary[1] * 60000;
+              // Change current millitary to milliseconds
+              let nowMillitaryToMs = nowMillitary[0] * 3600000 + nowMillitary[1] * 60000;
 
-            // Change wake-up millitary to milliseconds
-            let futureMillitaryToMs = futureMillitary[0] * 3600000 + futureMillitary[1] * 60000; 
+              // Change wake-up millitary to milliseconds
+              let futureMillitaryToMs = futureMillitary[0] * 3600000 + futureMillitary[1] * 60000; 
 
-            // Calc if wake-up time is on the same day or next
-            if (nowMillitaryToMs > futureMillitaryToMs) {
-                // remaining milliseconds till the end of the current day
-                let differenceMs24 = 86400000 - nowMillitaryToMs;
+              // Calc if wake-up time is on the same day or next
+              if (nowMillitaryToMs > futureMillitaryToMs) {
+                  // remaining milliseconds till the end of the current day
+                  let differenceMs24 = 86400000 - nowMillitaryToMs;
 
-                // total milliseconds from now till wake-up time
-                futureTotal = futureMillitaryToMs + differenceMs24;     
-            } else {
-                futureTotal = futureMillitaryToMs - nowMillitaryToMs;
-            }
+                  // total milliseconds from now till wake-up time
+                  futureTotal = futureMillitaryToMs + differenceMs24;     
+              } else {
+                  futureTotal = futureMillitaryToMs - nowMillitaryToMs;
+              }
 
-            // calc hours & minutes
-            let remainingHour = Math.floor(futureTotal / 3600000) < 10 ? "0" + Math.floor(futureTotal / 3600000) : Math.floor(futureTotal / 3600000);
-            let remainingMinute = Math.floor((futureTotal % 3600000) / 60000) < 10 ? "0" + Math.floor((futureTotal % 3600000) / 60000) : Math.floor((futureTotal % 3600000) / 60000);
+              // calc hours & minutes
+              let remainingHour = Math.floor(futureTotal / 3600000) < 10 ? "0" + Math.floor(futureTotal / 3600000) : Math.floor(futureTotal / 3600000);
+              let remainingMinute = Math.floor((futureTotal % 3600000) / 60000) < 10 ? "0" + Math.floor((futureTotal % 3600000) / 60000) : Math.floor((futureTotal % 3600000) / 60000);
 
-            futureTime = `${remainingHour}:${remainingMinute}`; 
+              futureTime = `${remainingHour}:${remainingMinute}`; 
+
+              return futureTime;
             
-            return futureTime;
+            } else {
+              return;
+            }
+            
             
         }
     }
@@ -288,7 +296,9 @@ let UIModule = (function() {
         timeCalcBox: document.querySelector(".time__calc-box"),
         amPmSwitch: document.querySelector(".am-pm__radio-box"),
         amPmSelector: document.querySelector(".toggle-outside"),
-        ampmFuture: document.querySelector(".time-calc__ampm")
+        ampmFuture: document.querySelector(".time-calc__ampm"),
+        body: document.querySelector("body"),
+        sliderContainer: document.querySelector('.content')
         
     };
     
@@ -460,17 +470,20 @@ let UIModule = (function() {
         
         // Display future time
         displayFutureTime: function(futureTime) {
-            
-            let splitTime = futureTime.split(" ");
-            
-            getDOM.futureTimeDisp.innerHTML = splitTime[0];
-            
-            if (labelClass === "input-in") {
-                getDOM.ampmFuture.innerHTML = splitTime[1];
-                getDOM.ampmFuture.classList.add("active");
 
-            } else if (labelClass === "input-at") {
-                getDOM.ampmFuture.classList.remove("active");
+            if (futureTime) {
+              let splitTime = futureTime.split(" ");
+            
+              getDOM.futureTimeDisp.innerHTML = splitTime[0];
+
+              if (labelClass === "input-in") {
+                  getDOM.ampmFuture.innerHTML = splitTime[1];
+                  getDOM.ampmFuture.classList.add("active");
+
+              } else if (labelClass === "input-at") {
+                  getDOM.ampmFuture.classList.remove("active");
+              }
+
             }
             
         },
@@ -487,6 +500,7 @@ let UIModule = (function() {
 
 let controllerModule = (function(dataMod, UIMod) {
     
+    let appState = false;
     let atOrIn; 
     let amOrPm = "am"; 
     let displayedTime;
@@ -494,10 +508,19 @@ let controllerModule = (function(dataMod, UIMod) {
     
     // Get DOM elements from UI Module
     const DOMElements = UIMod.DOMParts();
+    console.log(DOMElements)
    
+  
     // set up eventListeners
     const bindEvents = function() {
-        document.querySelector("body").onload = updateClock(); 
+        
+        DOMElements.body.onload = () => { // <== Should this fun be in init()???
+          updateClock();
+          moveHourSlider();
+          moveMinuteSlider();
+          DOMElements.sliderContainer.classList.add('opaque');
+        };
+      
         DOMElements.radioBtnBox.addEventListener("click", selectRadioBtn);
         DOMElements.setTimeBox.addEventListener("click", setTimeDisplay);
         DOMElements.amPmSwitch.addEventListener("click", selectAmPm);
@@ -525,6 +548,35 @@ let controllerModule = (function(dataMod, UIMod) {
     // Select "at"/"in" time format, update UI
     let selectRadioBtn = function(event) {
         
+        appState = true;
+        
+        // Remove opacity from slider container 
+        DOMElements.sliderContainer.classList.remove('opaque');
+      
+        if (appState) {
+          let classLabel = event.target.getAttribute("class");
+          atOrIn = classLabel;
+
+          // "subscribe" to show AM/PM button 
+          pubsub.subscribe("selectAtIn", UIMod.displayAmPmBtn);
+
+          // "subscribe" to show weekdays
+          pubsub.subscribe("selectAtIn", UIMod.displayWeekDays);
+
+          // "subscribe" show future time box
+          pubsub.subscribe("selectAtIn", UIMod.moveTimeBox);
+
+          // "subscribe" to show "at" or in on time display
+          pubsub.subscribe("selectAtIn", UIMod.displayAtOrIn); 
+
+          // "subscribe" to reset time display and future time display to 00:00
+          pubsub.subscribe("selectAtIn", UIMod.resetAllTimes);
+
+          // "publish" the event
+          pubsub.emit("selectAtIn", classLabel);
+  
+        }
+/*
         let classLabel = event.target.getAttribute("class");
         atOrIn = classLabel;
         
@@ -545,6 +597,7 @@ let controllerModule = (function(dataMod, UIMod) {
         
         // "publish" the event
         pubsub.emit("selectAtIn", classLabel);
+*/
 
     };
        
@@ -574,8 +627,23 @@ let controllerModule = (function(dataMod, UIMod) {
     // Set/display hours & minutes 
     let setTimeDisplay = function(event) {
         
-        
-        // Get time/label from the sliders
+        if (appState) {
+          // Get time/label from the sliders
+          let clickedTime = UIMod.getClickedTime(event);
+
+          // display clicked time
+          UIMod.displayClickedTime(clickedTime);
+
+          // Get displayed time as integer
+          displayedTime = UIMod.getDisplayedTime(DOMElements.displayTimeBox);
+
+          // Calc future wake-up time (either in "at" or "in" mode)
+          futureTime = atOrIn === ("input-at") ? dataMod.calcFutureTimeAt(displayedTime, amOrPm) : dataMod.calcFutureTimeIn(displayedTime, amOrPm);
+
+          // Display future time
+          UIMod.displayFutureTime(futureTime);       
+        }
+ /*       // Get time/label from the sliders
         let clickedTime = UIMod.getClickedTime(event);
         
         // display clicked time
@@ -588,7 +656,7 @@ let controllerModule = (function(dataMod, UIMod) {
         futureTime = atOrIn === ("input-at") ? dataMod.calcFutureTimeAt(displayedTime, amOrPm) : dataMod.calcFutureTimeIn(displayedTime, amOrPm);
         
         // Display future time
-        UIMod.displayFutureTime(futureTime);
+        UIMod.displayFutureTime(futureTime);*/
         
     };
     
