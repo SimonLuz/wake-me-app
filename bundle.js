@@ -386,6 +386,8 @@ let UIModule = (function() {
             
         },
       
+        
+        // display colors at respective UI elements
         selectColor: function(label) {
           let prep = label.split('-')[1];
           
