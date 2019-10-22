@@ -278,6 +278,9 @@ let dataModule = (function() {
 
 let UIModule = (function() {
     
+  let self = this;
+    
+    console.log("THIS", self)
     let labelClass;
     
     const getDOM = {
@@ -294,7 +297,9 @@ let UIModule = (function() {
         amPmSelector: document.querySelector(".toggle-outside"),
         ampmFuture: document.querySelector(".time-calc__ampm"),
         body: document.querySelector("body"),
-        sliderContainer: document.querySelector('.content')
+        sliderContainer: document.querySelector('.content'),
+        timeDispPrep: document.querySelector('.time-display__prep'),
+        timeCalcPrep: document.querySelector('.time-calc__prep')
         
     };
     
@@ -313,7 +318,13 @@ let UIModule = (function() {
             getDOM.timeNow.textContent = time;
         },
         
-        
+        // define selected mode's preposition ('at' or 'in')
+        getPreposition: function(label) {
+          let getPrepos = label.split("-");
+          return getPrepos[1];
+        },
+      
+      
         // add/remove "active" class to show AM / PM button
         displayAmPmBtn: function(label) {
             labelClass = label;
@@ -373,6 +384,23 @@ let UIModule = (function() {
                 dispAmPm.classList.remove("display");
             }
             
+        },
+      
+        selectColor: function(label) {
+          let prep = label.split('-')[1];
+          
+//        let value1 = document.querySelector(`.time-display__prep`).innerHTML;
+//          console.log(value1)
+          let opposite = prep === "at" ? 'in' : "at";
+          let selectClass = document.querySelector(`.radio__${prep}`);
+          
+          getDOM.atInDisplay.forEach((el, i, arr) => {          arr[i].classList.remove(`color-${opposite}`);
+            arr[i].classList.remove(`color-${prep}`);      
+          });
+          selectClass.classList.remove(`color-${prep}`);
+          
+          getDOM.atInDisplay.forEach((el, i, arr) => arr[i].classList.add(`color-${el.innerHTML}`));
+          selectClass.classList.add(`color-${prep}`);
         },
         
         
@@ -474,7 +502,7 @@ let UIModule = (function() {
             
               getDOM.futureTimeDisp.innerHTML = splitTime[0];
               
-              // a quick 'hack' to style 'AM' vs 'min h' in the future time display
+              // a quick 'hack' to style 'AM' vs 'min h' in the future time display:
               if (labelClass === "input-in") {
                   getDOM.ampmFuture.innerHTML = splitTime[1];
                   getDOM.ampmFuture.classList.add("active");
@@ -561,6 +589,11 @@ let controllerModule = (function(dataMod, UIMod) {
           let classLabel = event.target.getAttribute("class");
           atOrIn = classLabel;
 
+          // define preposition
+          pubsub.subscribe("selectAtIn", UIMod.getPreposition);
+
+          
+          
           // "subscribe" to show AM/PM button 
           pubsub.subscribe("selectAtIn", UIMod.displayAmPmBtn);
 
@@ -572,6 +605,9 @@ let controllerModule = (function(dataMod, UIMod) {
 
           // "subscribe" to show "at" or in on time display
           pubsub.subscribe("selectAtIn", UIMod.displayAtOrIn); 
+          
+          // add 'color...' class to UI "at" or "in" elements
+          pubsub.subscribe('selectAtIn', UIMod.selectColor)
 
           // "subscribe" to reset time display and future time display to 00:00
           pubsub.subscribe("selectAtIn", UIMod.resetAllTimes);

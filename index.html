@@ -23,13 +23,14 @@
             
             <div class="time-type-container">
                 <div class="radio-btn-box">
-                    <div class="radio__at">
+        <!---->
+                    <div class="radio__at color-at" prepo='prep-in'>
                         <label for="radio-at" name="radio-btn">&#64;</label>
                         <input type="radio" name="radio-btn" id="radio-at" class="input-at">
                         <span class="radio-span"></span>
 
                     </div>
-                    <div class="radio__in">
+                    <div class="radio__in" prepo='prep-in'>
                         <label for="radio-in" name="radio-btn" >in</label> 
                         <input type="radio" name="radio-btn" id="radio-in" class="input-in">
                         <span class="radio-span"></span>
@@ -75,7 +76,9 @@
                     
                     <div class="time-display">
                         <div class="time-display__time-box">
-                            <span class="time-display__prep">&#64;</span>   
+                            
+            <!---->
+                            <span class="time-display__prep" prepo='prep-'>&#64;</span>   
                             <span class="time-display__hour" label="hour">00</span>
                             <span class="time-display__colon">:</span>
                             <span class="time-display__minute" label="minute">00</span>
@@ -83,7 +86,7 @@
                         </div>
 
                         <div class="time__calc-box">
-                            <span class="time-calc__prep">at</span>   
+                            <span class="time-calc__prep" prepo='prep-in'>at</span>   
                             <div class="time-calc__hour" id="hour"></div>
                             <span class="time-calc__ampm" id="ampm">AM</span> 
                         </div>    
