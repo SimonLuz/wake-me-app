@@ -50,11 +50,11 @@ body {
 
 /*class with colors for 'at' and 'in' modes */
 .color-at {
-  color: #00ff00;
+  color: #7df47d;
 }
 
 .color-in {
-  color: #ff00bf;
+  color: rgb(255, 123, 148);
 }
 
 
@@ -364,6 +364,10 @@ body {
 .time-calc__ampm {
     display: block;
     font-size: 1.5rem;
+}
+
+.time-calc__prep {
+/*    font-weight: bold;*/
 }
 
 .time-calc__hour {

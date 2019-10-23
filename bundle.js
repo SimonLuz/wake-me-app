@@ -320,8 +320,10 @@ let UIModule = (function() {
         
         // define selected mode's preposition ('at' or 'in')
         getPreposition: function(label) {
-          let getPrepos = label.split("-");
-          return getPrepos[1];
+          if (label) {
+            let getPrepos = label.split("-");
+            return getPrepos[1];  
+          }
         },
       
       
@@ -367,42 +369,48 @@ let UIModule = (function() {
         displayAtOrIn: function(label) {
 
           console.log("DISPLAY", label)
-          
-            let getPrepos = label.split("-");
-            let atOrIn = getPrepos[1] === "in" ?  "at" : "in";
-            let dispAmPm = getDOM.displayTimeBox[getDOM.displayTimeBox.length - 1];
-            
-            if (labelClass) {
-                getDOM.atInDisplay[0].innerHTML = getPrepos[1];
-                getDOM.atInDisplay[1].innerHTML = atOrIn;
-                
-                getDOM.atInDisplay.forEach((el) => el.classList.add("display"));
-                dispAmPm.classList.add("display");
-            } 
-            
-            if (getPrepos[1] === "in") {
-                dispAmPm.classList.remove("display");
+            if (label) {
+              let getPrepos = label.split("-");
+              let atOrIn = getPrepos[1] === "in" ?  "at" : "in";
+              let dispAmPm = getDOM.displayTimeBox[getDOM.displayTimeBox.length - 1];
+
+              if (labelClass) {
+                  getDOM.atInDisplay[0].innerHTML = getPrepos[1];
+                  getDOM.atInDisplay[1].innerHTML = atOrIn;
+
+                  getDOM.atInDisplay.forEach((el) => el.classList.add("display"));
+                  dispAmPm.classList.add("display");
+              } 
+
+              if (getPrepos[1] === "in") {
+                  dispAmPm.classList.remove("display");
+              }
             }
-            
         },
       
         
         // display colors at respective UI elements
         selectColor: function(label) {
-          let prep = label.split('-')[1];
-          
-//        let value1 = document.querySelector(`.time-display__prep`).innerHTML;
-//          console.log(value1)
-          let opposite = prep === "at" ? 'in' : "at";
-          let selectClass = document.querySelector(`.radio__${prep}`);
-          
-          getDOM.atInDisplay.forEach((el, i, arr) => {          arr[i].classList.remove(`color-${opposite}`);
-            arr[i].classList.remove(`color-${prep}`);      
-          });
-          selectClass.classList.remove(`color-${prep}`);
-          
-          getDOM.atInDisplay.forEach((el, i, arr) => arr[i].classList.add(`color-${el.innerHTML}`));
-          selectClass.classList.add(`color-${prep}`);
+          if (label) {
+            let selectClass;
+            let prep = label.split('-')[1];
+            let opposite = prep === "at" ? 'in' : "at";
+            let selectHTML = (x) => {
+              selectClass = document.querySelector(`.radio__${x}`);
+            }
+              
+          // add classes to "at"/"in" HTML elements 
+            getDOM.atInDisplay.forEach((el, i, arr) => {            arr[i].classList.remove(`color-${opposite}`);
+              arr[i].classList.remove(`color-${prep}`);      
+            });
+            selectHTML(opposite);
+            selectClass.classList.remove(`color-${opposite}`);
+
+            // Add 'color-in' or 'color-at' class
+            selectHTML(prep);
+            selectClass.classList.add(`color-${prep}`);
+            getDOM.atInDisplay.forEach((el, i, arr) => arr[i].classList.add(`color-${el.innerHTML}`));
+          }
         },
         
         
