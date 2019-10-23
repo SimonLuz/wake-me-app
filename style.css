@@ -2,14 +2,14 @@
 :root {
     --main-container-width: 100vw;
     
-    --device-width: 375px;
+    --device-width: 37.5rem;
     
     --minute-item-width: calc((-2 * var(--margin-time-small)) + (var(--main-container-width) / 5));
   
-    --margin-time-small: 5px;
-    --margin-box-small: 10px;
-    --margin-box-medium: 20px;
-    --margin-box-large: 30px;
+    --margin-time-small: .5rem;
+    --margin-box-small: 1rem;
+    --margin-box-medium: 2rem;
+    --margin-box-large: 3rem;
     
     --color-background: #4a4a4a;
     --color-grey-light: #7e7e7e;
@@ -26,9 +26,23 @@
     box-sizing: inherit;
 }
 
+
 html {
     font-size: 62.5%;
 }
+
+@media only screen and (min-width: 390px) {
+  html {
+    font-size: 70%;
+  }
+}
+
+@media only screen and (max-width: 330px) {
+  html {
+    font-size: 56%;
+  }
+}
+
 
 body {
     font-family: "Open Sans";
@@ -83,9 +97,9 @@ body {
     }
     
     .container {
-        width: 375px;
-        height: 667px;
-        margin: 100px;
+        width: 37.5rem;
+        height: 66.7rem;
+        margin: 10rem;
         border: 15px solid black;
         border-top: 35px solid black;
         border-bottom: 55px solid black;
@@ -100,7 +114,7 @@ body {
 /****************** TOP *****************/
 
 .date-time {
-    padding-top: 5px;   
+    padding-top: .5rem;   
     text-align: center;
 }
 
@@ -151,10 +165,17 @@ body {
 
 .radio__in input, 
 .radio__at input {
+/*  -webkit-appearance: none;
+     -moz-appearance: none;
+     appearance: none;*/
     width: 2rem;
     height: 2rem;
     align-self: center;
     z-index: 10;
+}
+
+.radio__at input:checked {
+  background: blue;
 }
 
 .radio-span {
@@ -170,7 +191,8 @@ body {
 [class*="radio"] input:checked + .radio-span {
     animation: ripple 0.2s linear;
 }
-    
+
+
 .am-pm {
     display: flex;
     margin-left: 23%;    
@@ -279,13 +301,19 @@ body {
 }
 
 .set-time__hour-item {
-/*    border: 1px solid black;*/
+    position: relative;
+    top: 0;
+  
     height: 5rem;
     margin: .5rem;
     text-align: center;
     background-color: var(--color-grey-light);
     border-radius: .3rem;
-/*    opacity: .5;*/
+    outline: none;
+}
+
+.set-time__hour-item:active {
+  top: 2px;
 }
 
 .set-time__hour-item h3 {
@@ -386,7 +414,7 @@ body {
 }
 
 
-/****************** SET TIME MINUTES *****************/
+/****************** MINUTE SLIDER - set-time__minutes *****************/
 .slider-minutes {
     display: flex;
     width: calc(var(--minute-item-width) * 11 + var(--margin-time-small) * 22);
@@ -394,6 +422,10 @@ body {
 }
 
 .set-time__minute-item {
+    position: relative;
+    top: 0;
+    transition: all .2s;
+  
     display: block;
     height: 3rem;
     width: var(--minute-item-width); /* 65px */
@@ -403,8 +435,10 @@ body {
     margin-right: var(--margin-time-small); /* 5px */
     line-height: 3rem;
     text-align: center;
-/*    opacity: .5;*/
-/*    transition: opacity .5s;*/
+}
+
+.set-time__minute-item:active {
+  top: 2px;
 }
 
 
@@ -418,16 +452,19 @@ body {
 .day {
     padding: 2px .5rem;
     font-size: 1.5rem;
-    background-color: var(--color-grey-light);
+    background: var(--color-grey-light);
     border-radius: .3rem;
-/*    opacity: .6;*/
     transform: translateX(calc(-1*var(--main-container-width)));
-    transition: transform .4s;
-    transition-delay: .7s;
+    transition: transform .4s .7s, background .1s, color 1s;
 }
 
 .day.active {
     transform: translateX(0);
+}
+
+.day.clicked {
+  background: #ccc;
+  color: #717171;
 }
 
 

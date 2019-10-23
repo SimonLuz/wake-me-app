@@ -529,6 +529,11 @@ let UIModule = (function() {
             }
             
         },
+      
+        // add CSS class to selected weekdays
+        addDayClass: function(item) {
+          item.classList.toggle("clicked");
+        },
         
     }
     
@@ -566,6 +571,9 @@ let controllerModule = (function(dataMod, UIMod) {
         DOMElements.radioBtnBox.addEventListener("click", selectRadioBtn);
         DOMElements.setTimeBox.addEventListener("click", setTimeDisplay);
         DOMElements.amPmSwitch.addEventListener("click", selectAmPm);
+        DOMElements.weekDays.forEach((el) => {
+          el.addEventListener('click', selectWeekDay);
+        })
     };
     
     
@@ -710,6 +718,13 @@ let controllerModule = (function(dataMod, UIMod) {
         
     };
     
+    
+    // Select weekdays in "at" mode
+    const selectWeekDay = function(event) {
+      let selectedDay = event.target;
+      
+      UIMod.addDayClass(selectedDay);
+    }
 
     
     return {
