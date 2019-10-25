@@ -1,4 +1,3 @@
-/*https://codepen.io/hansmaad/pen/zBdzxp*/
 :root {
     --main-container-width: 100vw;
     
@@ -165,12 +164,7 @@ body {
 
 .radio__in input, 
 .radio__at input {
-/*  -webkit-appearance: none;
-     -moz-appearance: none;
-     appearance: none;*/
-  
   opacity: 0;
-  
     width: 2rem;
     height: 2rem;
     align-self: center;
@@ -206,20 +200,6 @@ body {
 .radio__button--in::after {
   background: rgb(255, 123, 148);
 }
-
-/*.radio__at input:checked {
-  background: blue;
-}*/
-
-/*.radio-span {
-    align-self: center;
-    width: 1.3rem;
-    height: 1.3rem;
-    background-color: white;
-    border-radius: 50%;
-    transform: translateX(-1.4rem);
-    z-index: 0;
-}*/
 
 [class*="radio"] input:checked + [class*='radio__button'] {
     animation: ripple 0.2s linear;
@@ -270,19 +250,6 @@ body {
     }
     
 }
-
-
-/***********************************************************/
-
-/***********************************************************/
-
-
-
-
-/***********************************************************/
-
-/***********************************************************/
-
 
 
 /******************** AM PM on-off SWITCH ******************/
@@ -516,14 +483,3 @@ body {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-/****************** PHONE CONTAINER *****************/
