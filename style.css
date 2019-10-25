@@ -168,17 +168,50 @@ body {
 /*  -webkit-appearance: none;
      -moz-appearance: none;
      appearance: none;*/
+  
+  opacity: 0;
+  
     width: 2rem;
     height: 2rem;
     align-self: center;
     z-index: 10;
 }
 
-.radio__at input:checked {
-  background: blue;
+[class*='radio__button'] {
+  display: inline-block;
+  position: absolute;
+  top: 0;
+  left: 5.6rem;
+  width: 1.6rem;
+  height: 1.6rem;
+  border: 3px solid #ccc;
+  border-radius: 50%;
+  align-self: center;
 }
 
-.radio-span {
+[class*='radio__button']::after {
+  content: '';
+  position: absolute;
+  display: block;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%); 
+  width: 1rem;
+  height: 1rem;
+  border-radius: 50%;
+  background: #7df47d;
+  opacity: 0;
+}
+
+.radio__button--in::after {
+  background: rgb(255, 123, 148);
+}
+
+/*.radio__at input:checked {
+  background: blue;
+}*/
+
+/*.radio-span {
     align-self: center;
     width: 1.3rem;
     height: 1.3rem;
@@ -186,12 +219,23 @@ body {
     border-radius: 50%;
     transform: translateX(-1.4rem);
     z-index: 0;
-}
+}*/
 
-[class*="radio"] input:checked + .radio-span {
+[class*="radio"] input:checked + [class*='radio__button'] {
     animation: ripple 0.2s linear;
 }
 
+[class*="radio"] input:checked + .radio__button--at {
+    border: 3px solid  #7df47d; 
+}
+
+[class*="radio"] input:checked + .radio__button--in {
+    border: 3px solid  rgb(255, 123, 148); 
+}
+
+[class*="radio"] input:checked + [class*='radio__button']::after {
+    opacity: 1;
+}
 
 .am-pm {
     display: flex;
@@ -199,8 +243,8 @@ body {
     height: 0px;
     opacity: 0;
     transition: all .4s;
-    
 }
+
 .am-pm__active {
     height: 3rem;
     opacity: 1;
@@ -210,6 +254,10 @@ body {
 @keyframes ripple {
     
     0% {
+/*
+      color: white;
+        opacity: 1;
+*/
         box-shadow: 0px 0px 0px 1px rgba(255, 255, 255, 0);
     }
     
