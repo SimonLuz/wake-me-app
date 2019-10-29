@@ -14,6 +14,8 @@
     --color-grey-light: #7e7e7e;
     --color-grey-medium: #6a6a6a;
     --color-grey-dark: #5a5a5a;
+    --color-green-main:  #7df47d;
+    --color-red-main:  rgb(255, 123, 148);
 }
 
 
@@ -62,13 +64,9 @@ body {
 
 
 /*class with colors for 'at' and 'in' modes */
-.color-at {
-  color: #7df47d;
-}
+.color-at { color: var(--color-green-main) !important; }
 
-.color-in {
-  color: rgb(255, 123, 148);
-}
+.color-in { color: var(--color-red-main) !important; }
 
 
 /****************** PHONE CONTAINER *****************/
@@ -311,6 +309,12 @@ body {
 
 
 /****************** HOURS Slider *****************/
+
+.set-time {
+  margin-bottom: var(--margin-box-large);
+}
+
+
 .set-time__hours {
     margin-bottom: var(--margin-box-medium);
 }
@@ -318,17 +322,17 @@ body {
 .set-time__hour-item {
     position: relative;
     top: 0;
-  
     height: 5rem;
     margin: .5rem;
     text-align: center;
     background-color: var(--color-grey-light);
     border-radius: .3rem;
     outline: none;
+    transition: all .2s;
 }
 
 .set-time__hour-item:active {
-  top: 2px;
+  top: 3px;
 }
 
 .set-time__hour-item h3 {
@@ -453,7 +457,7 @@ body {
 }
 
 .set-time__minute-item:active {
-  top: 2px;
+  top: 3px;
 }
 
 
@@ -481,5 +485,124 @@ body {
   background: #ccc;
   color: #717171;
 }
+
+
+/************************* Bottom Container ************************/
+/*********** SAVE & RESET buttons ********/
+
+
+.save-reset__container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: var(--margin-box-medium);
+}
+
+.save-reset {
+  display: flex;
+  color: #ccc;
+  margin: 0 2rem;
+   
+}
+
+.button {
+  color: inherit;
+  border: none;
+  padding: .1rem 2rem .2rem 2rem;
+  background: var(--color-grey-medium);
+  text-transform: uppercase;
+  font-size: 1rem;
+  line-height: 2rem;
+  border-radius: 3px;
+  letter-spacing: 1px;
+  outline: none;
+  transition: transform .2s;
+}
+
+.icon {
+  position: relative;
+  top: 4px;
+  margin-right: 1rem;
+  font-size: 2rem;
+}
+
+.button:active {
+  transform: translateY(3px);
+  animation: ripple .2s linear;
+}
+
+
+/******************** Alarm List *******************/
+
+.alarm {
+  padding-left: 1rem;
+}
+
+.alarm__item {
+  width: 60%;
+  height: 2rem;
+  display: flex;
+  letter-spacing: 1px;
+  font-size: 1.3rem;
+  opacity: .7;
+  transform: translateX(-100%);
+  transition: all .2s linear;
+}
+
+.alarm__item.show {
+  transform: translateX(0);
+}
+
+/*.alarm__item > * {
+  margin-right: 1rem;
+}*/
+
+
+.alarm__icon {
+display: block; 
+}
+
+[class*="alarm_"] {
+  margin-right: 1rem;
+  align-self: center;
+}
+
+.alarm__day {
+  width: 3rem;
+}
+
+.alarm__time {
+  background: var(--color-background);
+  z-index: 10;
+}
+
+.alarm__delete--btn {
+  background: transparent;
+  border: none;
+  color: inherit;
+  transform: translate(-3rem, 1px);
+  transition: all .2s linear;
+/*  opacity: 0;*/
+}
+
+.alarm__active {
+  opacity: 1
+}
+.alarm__active > button {
+  transform: translate(.5rem, 2px);
+  opacity: 1;
+}
+
+
+.alarm__icon {
+  font-size: 1.6rem;
+} 
+
+
+
+
+
+
+
+
 
 

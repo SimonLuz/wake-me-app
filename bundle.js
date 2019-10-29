@@ -299,7 +299,9 @@ let UIModule = (function() {
         body: document.querySelector("body"),
         sliderContainer: document.querySelector('.content'),
         timeDispPrep: document.querySelector('.time-display__prep'),
-        timeCalcPrep: document.querySelector('.time-calc__prep')
+        timeCalcPrep: document.querySelector('.time-calc__prep'),
+        saveBtnBox: document.querySelector(".save-btn__container"),
+        saveBtn: document.querySelector(".save-btn")
         
     };
     
@@ -724,7 +726,8 @@ let controllerModule = (function(dataMod, UIMod) {
       let selectedDay = event.target;
       
       UIMod.addDayClass(selectedDay);
-    }
+    };
+    
 
     
     return {
