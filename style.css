@@ -495,11 +495,11 @@ body {
   display: flex;
   justify-content: center;
   margin-bottom: var(--margin-box-medium);
+  color: green;
 }
 
 .save-reset {
   display: flex;
-  color: #ccc;
   margin: 0 2rem;
    
 }
@@ -516,6 +516,7 @@ body {
   letter-spacing: 1px;
   outline: none;
   transition: transform .2s;
+
 }
 
 .icon {
@@ -523,6 +524,7 @@ body {
   top: 4px;
   margin-right: 1rem;
   font-size: 2rem;
+  color: inherit;
 }
 
 .button:active {
@@ -545,10 +547,11 @@ body {
   font-size: 1.3rem;
   opacity: .7;
   transform: translateX(-100%);
-  transition: all .2s linear;
+  transition: all .3s linear;/*cubic-bezier(0, 0.94, 0.49, 0.88);*/
+  transition-delay: .2s;
 }
 
-.alarm__item.show {
+.alarm-show {
   transform: translateX(0);
 }
 
@@ -581,17 +584,18 @@ display: block;
   color: inherit;
   transform: translate(-3rem, 1px);
   transition: all .2s linear;
+/*  transition-delay: .3s;*/
 /*  opacity: 0;*/
 }
 
 .alarm__active {
   opacity: 1
 }
+
 .alarm__active > button {
-  transform: translate(.5rem, 2px);
+  transform: translate(.5rem, 1px);
   opacity: 1;
 }
-
 
 .alarm__icon {
   font-size: 1.6rem;

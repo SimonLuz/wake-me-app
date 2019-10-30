@@ -174,6 +174,12 @@ const moveMinuteSlider = (function() {
 //************************************************************************************
 let dataModule = (function() {
     
+    let alarmWeekDays = [];  
+   /* let alarmWeekDays = {
+      html: [],
+      labels: []
+    }*/
+    
     let getCurrTime = function() {
         let currTime = new Date();
         return currTime;
@@ -265,7 +271,29 @@ let dataModule = (function() {
             } else {
               return;
             }
-        }
+        },
+      
+        
+        updateAlarmDays: function(event) {
+          let selectedDay = event.target;
+          let weekDay = selectedDay.innerHTML;
+          let index = alarmWeekDays.findIndex(el => el === weekDay );
+      
+          // add / remove 'weekDays' in 'alarmWeekDays' array
+          index === -1 ? alarmWeekDays.push(weekDay) : alarmWeekDays = alarmWeekDays.filter(el => el !== weekDay);         
+  
+          return alarmWeekDays;
+        },
+      
+        
+        // 
+        getAlarmDays: function() {
+          return alarmWeekDays;
+        },
+      
+      
+        
+        
     }
     
 })();
@@ -278,9 +306,6 @@ let dataModule = (function() {
 
 let UIModule = (function() {
     
-  let self = this;
-    
-    console.log("THIS", self)
     let labelClass;
     
     const getDOM = {
@@ -300,8 +325,10 @@ let UIModule = (function() {
         sliderContainer: document.querySelector('.content'),
         timeDispPrep: document.querySelector('.time-display__prep'),
         timeCalcPrep: document.querySelector('.time-calc__prep'),
-        saveBtnBox: document.querySelector(".save-btn__container"),
-        saveBtn: document.querySelector(".save-btn")
+        saveResetBox: document.querySelector(".save-reset__container"),
+        saveBtn: document.querySelector(".btn-save"),
+        resetBtn: document.querySelector(".btn-reset"),
+        alarmList: document.querySelector(".alarm"),
         
     };
     
@@ -391,6 +418,7 @@ let UIModule = (function() {
         },
       
         
+      
         // display colors at respective UI elements
         selectColor: function(label) {
           if (label) {
@@ -529,12 +557,69 @@ let UIModule = (function() {
               }
 
             }
-            
         },
       
         // add CSS class to selected weekdays
-        addDayClass: function(item) {
-          item.classList.toggle("clicked");
+        addDayClass: function(event) {
+          let selectedDay = event.target;
+          selectedDay.classList.toggle("clicked");
+        },
+      
+      
+        // Add font color to "save" & "reset" buttons ("at" or 'in' mode)
+        addSaveResetColor: function(item) {
+          let prep = item.split('-')[1];
+          let opposite = prep === 'at' ? 'in' : 'at';
+          
+          if (item) {
+            getDOM.saveResetBox.classList.remove(`color-${opposite}`);
+            getDOM.saveResetBox.classList.add(`color-${prep}`);
+          }
+        },
+      
+        
+        // add alarm to alarms list 
+        addAlarmItem: function(atOrIn, amOrPm, displayedTime, futureTime, alarmDays) {
+          let prep = atOrIn.split('-')[1];
+          let alarmTime = displayedTime.join(":")
+          console.log(prep, amOrPm, alarmTime, futureTime, alarmDays)
+          
+          alarmDays.forEach(el => {
+            const html = `<div class="alarm__item color-${prep}">
+                    <i class="alarm__icon ion-md-alarm"></i>  
+                    <div class="alarm__day">${el}</div>
+                    <div class="alarm__time">${alarmTime} ${amOrPm}</div>
+                    <button class="alarm__delete--btn"><i class="alarm__delete--icon alarm__icon ion-md-close-circle-outline"></i></button>
+                  </div>`;
+            
+            getDOM.alarmList.insertAdjacentHTML("beforeend", html);
+          })
+        },
+      
+      //https://css-tricks.com/different-approaches-for-creating-a-staggered-animation/
+        showAlarmItem: function() {
+          const alarmItems = document.querySelectorAll(".alarm__item");
+          let counter = 0;
+          
+          console.log(alarmItems.length) // 2
+          
+          const addToUI = function() {
+            if (counter >= alarmItems.length) {
+              clearInterval(interval);
+            } else {
+              alarmItems[counter].classList.add('alarm-show');
+              counter ++;
+            } 
+          };
+          
+          const interval = setInterval(addToUI, 200);
+        },
+      
+      
+        // remove 'active' class from days of the week
+        resetAlarmDays: function() {
+          console.log()
+          getDOM.weekDays.forEach(el => el.classList.remove('clicked'))
         },
         
     }
@@ -554,6 +639,7 @@ let controllerModule = (function(dataMod, UIMod) {
     let amOrPm = "am"; 
     let displayedTime;
     let futureTime;
+    let alarmWeekDays = [];
     
     // Get DOM elements from UI Module
     const DOMElements = UIMod.DOMParts();
@@ -575,7 +661,10 @@ let controllerModule = (function(dataMod, UIMod) {
         DOMElements.amPmSwitch.addEventListener("click", selectAmPm);
         DOMElements.weekDays.forEach((el) => {
           el.addEventListener('click', selectWeekDay);
-        })
+        });
+        DOMElements.saveBtn.addEventListener("click", clickSaveAlarm);
+        DOMElements.resetBtn.addEventListener("click", clickResetBtn);
+    
     };
     
     
@@ -631,33 +720,17 @@ let controllerModule = (function(dataMod, UIMod) {
 
           // "subscribe" to reset time display and future time display to 00:00
           pubsub.subscribe("selectAtIn", UIMod.resetAllTimes);
+          
+          // add font color to 'save' and 'reset' buttons
+          pubsub.subscribe('selectAtIn', UIMod.addSaveResetColor);
+          
+          
+          pubsub.subscribe('selectAtIn', UIMod.resetAlarmDays);
 
           // "publish" the event
           pubsub.emit("selectAtIn", classLabel);
   
         }
-/*
-        let classLabel = event.target.getAttribute("class");
-        atOrIn = classLabel;
-        
-        // "subscribe" to show AM/PM button 
-        pubsub.subscribe("selectAtIn", UIMod.displayAmPmBtn);
-        
-        // "subscribe" to show weekdays
-        pubsub.subscribe("selectAtIn", UIMod.displayWeekDays);
-        
-        // "subscribe" show future time box
-        pubsub.subscribe("selectAtIn", UIMod.moveTimeBox);
-        
-        // "subscribe" to show "at" or in on time display
-        pubsub.subscribe("selectAtIn", UIMod.displayAtOrIn); 
-        
-        // "subscribe" to reset time display and future time display to 00:00
-        pubsub.subscribe("selectAtIn", UIMod.resetAllTimes);
-        
-        // "publish" the event
-        pubsub.emit("selectAtIn", classLabel);
-*/
 
     };
        
@@ -703,32 +776,46 @@ let controllerModule = (function(dataMod, UIMod) {
           // Display future time
           UIMod.displayFutureTime(futureTime);       
         }
- /*       // Get time/label from the sliders
-        let clickedTime = UIMod.getClickedTime(event);
-        
-        // display clicked time
-        UIMod.displayClickedTime(clickedTime);
-        
-        // Get displayed time as integer
-        displayedTime = UIMod.getDisplayedTime(DOMElements.displayTimeBox);
-        
-        // Calc future wake-up time (either in "at" or "in" mode)
-        futureTime = atOrIn === ("input-at") ? dataMod.calcFutureTimeAt(displayedTime, amOrPm) : dataMod.calcFutureTimeIn(displayedTime, amOrPm);
-        
-        // Display future time
-        UIMod.displayFutureTime(futureTime);*/
         
     };
     
     
-    // Select weekdays in "at" mode
+    // Add class to week days and update "alarmWeekDays" array with selected days 
     const selectWeekDay = function(event) {
-      let selectedDay = event.target;
+      // update 'alarmWeekDays' array
+      const alarmDays = dataMod.updateAlarmDays(event);
       
-      UIMod.addDayClass(selectedDay);
+      // add color class to selected day
+      UIMod.addDayClass(event);
+    };
+    
+    
+    // add alarm time to the DOM
+    const clickSaveAlarm = function(event) {
+      // get selected days for alarm
+      const alarmDays = dataMod.getAlarmDays();
+      
+      // Inject alarm item into the DOM
+      UIMod.addAlarmItem(atOrIn, amOrPm, displayedTime, futureTime, alarmDays);
+      
+      // add class to show in the alarm list 
+      UIMod.showAlarmItem()
+      
+  /*    // reset days of the week 
+      UIMod.resetAlarmDays(DOMElements.weekDays);*/
+      
     };
     
 
+    //
+    const clickResetBtn = function() {
+      // reset days of the week 
+      UIMod.resetAlarmDays();
+      
+      // reset all displayed times
+      UIMod.resetAllTimes();
+      
+    }
     
     return {
         
