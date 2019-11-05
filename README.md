@@ -1,6 +1,6 @@
 # wake-me-app
 
-A new alarm-clock type app with original, proprietary UI design and functionalities
+A new alarm-clock type app for MOBILE with original, proprietary UI design and functionalities
 The app utilizes:
   - ES 6 Modules
   - Revealing Module Pattern
