@@ -9,7 +9,7 @@ export const pubsub = (function() {
         events: {},
         
         subscribe: function(eventName, fn, data1) {
-            console.log(this)
+//            console.log(this)
             this.events[eventName] = this.events[eventName] || [];
             this.events[eventName].push(fn);
 //            console.log(this.events)

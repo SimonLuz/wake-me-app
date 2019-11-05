@@ -68,6 +68,8 @@ body {
 
 .color-in { color: var(--color-red-main) !important; }
 
+.color-day { color: #ccc !important; }
+
 
 /****************** PHONE CONTAINER *****************/
 .container {
@@ -584,17 +586,20 @@ display: block;
   color: inherit;
   transform: translate(-3rem, 1px);
   transition: all .2s linear;
+  outline: none;
 /*  transition-delay: .3s;*/
 /*  opacity: 0;*/
 }
 
 .alarm__active {
-  opacity: 1
+  opacity: 1;
+  
 }
 
 .alarm__active > button {
   transform: translate(.5rem, 1px);
   opacity: 1;
+  outline: none;
 }
 
 .alarm__icon {

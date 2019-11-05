@@ -1,190 +1,49 @@
 // ******************************************************************
 // PubSub Module 
 // ******************************************************************
-// ??? Should we import IIFEs or functions that we call ???
 
 import { pubsub } from './js/pubSub.js';
-
-/*
-let pubsub = (function() {
-    
-    return {
-        
-        events: {},
-        
-        subscribe: function(eventName, fn, data1) {
-//            console.log(this)
-            this.events[eventName] = this.events[eventName] || [];
-            this.events[eventName].push(fn);
-//            console.log(this.events)
-        },
-        
-        unsubscribe: function(eventName, fn) {
-            if (this.events[eventName]) {
-                for (let i=0; i<this.events[eventName].length; i++) {
-                    if (this.events[eventName][i] === fn) {
-                        this.events[eventName].splice(i, 1);
-                        break;
-                    }
-                }
-            }
-        },
-        
-        emit: function(eventName, data1, data2) {
-            if (this.events[eventName]) {
-                this.events[eventName].forEach(function(fn) {
-                    fn(data1, data2);
-                })
-            }
-        }
-    
-    }
-        
-})();
-*/
-
 
 
 // ******************************************************************
 // // JQuery - SLICK library for the "hour" slider
 // ******************************************************************
 import { moveHourSlider } from './js/slickMod.js';
-//moveHourSlider();
-/*
-let moveHourSlider = (function() {
-
-    $('.center').slick({
-      centerMode: true,
-      centerPadding: '60px',
-      slidesToShow: 3,
-        arrows: false,
-      responsive: [
-        {
-          breakpoint: 768,
-          settings: {
-            arrows: false,
-            centerMode: true,
-            centerPadding: '40px',
-            slidesToShow: 3
-          }
-        },
-        {
-          breakpoint: 480,
-          settings: {
-            arrows: false,
-            centerMode: true,
-            centerPadding: '40px',
-            slidesToShow: 1
-          }
-        }
-      ]
-    });
-
-    // get rid of side arrows
-    $(document).ready(function() {
-        $(".set-time__scene").slick({
-            arrows:false
-        });
-    });    
-    
-})();
-
-*/
 
 
 // ******************************************************************
 // "Vanilla" JavaScript for the "minute" slider - own code
 // ******************************************************************
 import { moveMinuteSlider } from './js/minuteSlider.js';
-//moveMinuteSlider();
 
-/*
-const moveMinuteSlider = (function() {
-    let direction, limitTest, singleDistance, distToMove, transXMax, transXMin;
-    
-    const minutes = document.querySelector(".set-time__minutes");
-    const sliderMinutes = document.querySelector(".slider-minutes");
-    const minuteItems = document.querySelectorAll(".set-time__minute-item");
-    let startX = 0;
-    let startY = 0;
-    let endX = 0;
-    let distX = 0;
-    let totalDistance = 0;
-    
-    minutes.addEventListener("touchstart", function(event) {
-        startX = parseInt(event.changedTouches[0].clientX);
-        //        minuteItems.forEach(el => el.style.opacity = 1);
-    })
 
-    
-    minutes.addEventListener("touchmove", function(event) {
-        event.preventDefault();
-        let moveX = parseInt(event.changedTouches[0].clientX);
-        distX = Math.abs(startX - moveX);
-        direction = (startX - moveX) > 0 ? "left" : "right";
-        
-        let touchMove = direction === "left" ? distX * -1 : distX;
-        
-        sliderMinutes.style.transform = `translateX(${ touchMove + totalDistance}px)`;
-        
-    })
-    
-    
-    minutes.addEventListener("touchend", function(event) {
-        let endX = parseInt(event.changedTouches[0].clientX);
-        singleDistance = endX - startX;
-        let limitLeft = 0;
-        let limitRight = - 450;
-        totalDistance += singleDistance;
-        
-        if (totalDistance > limitLeft) {
-            sliderMinutes.style.transform = `translateX(${limitLeft}px)`;
-            totalDistance = 0;
-        } else if (totalDistance < limitRight) {
-            sliderMinutes.style.transform = `translateX(${limitRight}px)`;
-            totalDistance = limitRight;
-        }
-        */
-        // Slider MINUTES opacity
-       /* setTimeout(function() {
-            minuteItems.forEach(el => el.style.opacity = .5);
-            minuteItems.forEach(el => el.style.transition = "opacity " + 1 + "s");
-//            transition: opacity .5s;
-        }, 4000)*/
-         
-        
-        // ********** "DRAGABLE" FEEL - working code **************
-        /*  
-        let totalDistance = Math.abs(startX - endX);
-      limitTest = !!(Math.abs(endX - startX) > limit);
-        console.log(limitTest)
-        if (limitTest) {
-            sliderMinutes.style.transform = `translateX(75px)`;
-        } else {
-            sliderMinutes.style.transform = `translateX(0px)`;
-        }
-        
-    
-    })
-})();
-*/
 
-// ***********************************************************************************
+// ******************************************************************
 // DATA Module - module that handles data processing 
-//************************************************************************************
+//*******************************************************************
 let dataModule = (function() {
-    
+  
+  let futureTimeCommon;
+  
+  let timeFutureMs;
+  let nowyTime;
+    let futureMillitaryToMs;
+   let futureTotal;
     let alarmWeekDays = [];  
-   /* let alarmWeekDays = {
-      html: [],
-      labels: []
-    }*/
+  
+    const weekDays = [ 'Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat'];
     
+    let dayOfWeek = function() {
+      return weekDays[new Date(futureTimeCommon).getDay()]
+    };
+    
+  
     let getCurrTime = function() {
         let currTime = new Date();
         return currTime;
     };
     
+  
     let timeCurrObj = {
         
         timeString: function() {
@@ -205,7 +64,7 @@ let dataModule = (function() {
         }
     };
     
-     
+         
     
     return {
         
@@ -216,23 +75,21 @@ let dataModule = (function() {
         
         // calc future time when in "in" mode
         calcFutureTimeIn: function(time, ampm) {
-            
-//            let futureTime;
             let amPm = ampm;
             let timeArr = time; // [2, 30]
             
             let timeNowMs = getCurrTime().getTime();
-            let timeFutureMs = timeNowMs + time[0] * 3600000 + time[1] * 60000;
+            futureTimeCommon = timeNowMs + time[0] * 3600000 + time[1] * 60000;
 
-            let timeFuture = new Date(timeFutureMs).toLocaleTimeString(navigator.language, {hour: "2-digit", minute: "2-digit"});    
-             
+            let timeFuture = new Date(futureTimeCommon).toLocaleTimeString(navigator.language, {hour: "2-digit", minute: "2-digit"});    
+       
             return timeFuture;
         },
         
         
         // calc future time when in "at" mode
         calcFutureTimeAt: (time, ampm) => {
-            let futureTotal, futureTime;
+           let futureTime;
             let amPm = ampm;
             let timeArr = time; // [2, 30]
                 
@@ -247,8 +104,8 @@ let dataModule = (function() {
               let nowMillitaryToMs = nowMillitary[0] * 3600000 + nowMillitary[1] * 60000;
 
               // Change wake-up millitary to milliseconds
-              let futureMillitaryToMs = futureMillitary[0] * 3600000 + futureMillitary[1] * 60000; 
-
+              futureMillitaryToMs = futureMillitary[0] * 3600000 + futureMillitary[1] * 60000; 
+              
               // Calc if wake-up time is on the same day or next
               if (nowMillitaryToMs > futureMillitaryToMs) {
                   // remaining milliseconds till the end of the current day
@@ -259,6 +116,8 @@ let dataModule = (function() {
               } else {
                   futureTotal = futureMillitaryToMs - nowMillitaryToMs;
               }
+              
+              futureTimeCommon = getCurrTime().getTime() + futureTotal;
 
               // calc hours & minutes
               let remainingHour = Math.floor(futureTotal / 3600000) < 10 ? "0" + Math.floor(futureTotal / 3600000) : Math.floor(futureTotal / 3600000);
@@ -292,8 +151,22 @@ let dataModule = (function() {
         },
       
       
+      // remove alarm days from 'let alarmWeekDays = [];'  
+        resetAlarmArray: function() {
+          alarmWeekDays = [];
+        },
+      
+      
+        getFutureTimeMS: function() {
+//          return futureMillitaryToMs;
+          return futureTimeCommon;
+        },
         
         
+        getFutureDay: function () {
+          return dayOfWeek();
+        },
+      
     }
     
 })();
@@ -329,6 +202,7 @@ let UIModule = (function() {
         saveBtn: document.querySelector(".btn-save"),
         resetBtn: document.querySelector(".btn-reset"),
         alarmList: document.querySelector(".alarm"),
+        alarmDelete: document.querySelector('.alarm__delete--btn')
         
     };
     
@@ -397,7 +271,6 @@ let UIModule = (function() {
         // Toggle "at" or "in" on main display & future time display
         displayAtOrIn: function(label) {
 
-          console.log("DISPLAY", label)
             if (label) {
               let getPrepos = label.split("-");
               let atOrIn = getPrepos[1] === "in" ?  "at" : "in";
@@ -430,7 +303,8 @@ let UIModule = (function() {
             }
               
           // add classes to "at"/"in" HTML elements 
-            getDOM.atInDisplay.forEach((el, i, arr) => {            arr[i].classList.remove(`color-${opposite}`);
+            getDOM.atInDisplay.forEach((el, i, arr) => { 
+              arr[i].classList.remove(`color-${opposite}`);
               arr[i].classList.remove(`color-${prep}`);      
             });
             selectHTML(opposite);
@@ -465,7 +339,6 @@ let UIModule = (function() {
         // Get time label (hour / minute) and time value from the minute/hour sliders
         getClickedTime: function(event) {
             let item = event.target;
-            
             let itemLabel = item.getAttribute("label");
             let itemValue = parseInt(item.innerHTML);
             
@@ -493,22 +366,17 @@ let UIModule = (function() {
         // Display AM / PM selection on the main time display
         displayAmPm: function(label) {
             let DOMel = getDOM.displayTimeBox[getDOM.displayTimeBox.length - 1];
-            console.log(DOMel)
             
             DOMel.innerHTML = label;
-            
         },
         
         
         // Display clicked time in main time display box
         displayClickedTime: function(clickedTime) {
             
-            console.log("clickedTime", !!(clickedTime.label))
-            
             if (!clickedTime.label) { // prevents NAN to display on the main display
                 return;
             }
-            
             let time = clickedTime;
             
             for (let i of getDOM.displayTimeBox) {
@@ -533,6 +401,20 @@ let UIModule = (function() {
             return timeArr;
         },
         
+      
+        getDblDigit: function(displayedTime) {
+          let time = [];
+          
+          displayedTime.forEach(el => {
+            if (el < 10) {
+              time.push("0" + el)
+            } else {
+              time.push(el)
+            } 
+          })
+          return time;
+        },
+      
         
         // Display future time
         displayFutureTime: function(futureTime) {
@@ -559,6 +441,7 @@ let UIModule = (function() {
             }
         },
       
+      
         // add CSS class to selected weekdays
         addDayClass: function(event) {
           let selectedDay = event.target;
@@ -568,10 +451,10 @@ let UIModule = (function() {
       
         // Add font color to "save" & "reset" buttons ("at" or 'in' mode)
         addSaveResetColor: function(item) {
-          let prep = item.split('-')[1];
-          let opposite = prep === 'at' ? 'in' : 'at';
-          
           if (item) {
+            let prep = item.split('-')[1];
+            let opposite = prep === 'at' ? 'in' : 'at';
+            
             getDOM.saveResetBox.classList.remove(`color-${opposite}`);
             getDOM.saveResetBox.classList.add(`color-${prep}`);
           }
@@ -579,29 +462,55 @@ let UIModule = (function() {
       
         
         // add alarm to alarms list 
-        addAlarmItem: function(atOrIn, amOrPm, displayedTime, futureTime, alarmDays) {
+        addAlarmItem: function(atOrIn, amOrPm, displayedTime, futureTime, alarmDays, singleDay) {
+          let html;
           let prep = atOrIn.split('-')[1];
-          let alarmTime = displayedTime.join(":")
-          console.log(prep, amOrPm, alarmTime, futureTime, alarmDays)
+          let alarmTime = displayedTime.join(":");
           
-          alarmDays.forEach(el => {
-            const html = `<div class="alarm__item color-${prep}">
+          // this 'let alarm' converts into '00:00 PM', so other functions changing time format in 'dataMode' unnecessary
+          let alarm =  new Date(futureTime).toLocaleTimeString(navigator.language, {hour: "2-digit", minute: "2-digit"});
+          
+          if (prep === 'at' && alarmDays.length > 0) {
+            alarmDays.forEach(el => {
+              html = `<div class="alarm__item color-day">
                     <i class="alarm__icon ion-md-alarm"></i>  
                     <div class="alarm__day">${el}</div>
-                    <div class="alarm__time">${alarmTime} ${amOrPm}</div>
-                    <button class="alarm__delete--btn"><i class="alarm__delete--icon alarm__icon ion-md-close-circle-outline"></i></button>
+                    <div class="alarm__time">${alarm}</div>
+                    <button class="alarm__delete--btn"><i class="alarm__delete--icon alarm__icon ion-md-close-circle-outline" alarm='btn'></i></button>
+                  </div>`;
+              
+              getDOM.alarmList.insertAdjacentHTML("beforeend", html);
+              
+            }) 
+              
+          } else if (prep === 'at' && alarmDays.length === 0) {
+              html = `<div class="alarm__item color-${prep}">
+                    <i class="alarm__icon ion-md-alarm"></i>  
+                    <div class="alarm__day">${singleDay}</div>
+                    <div class="alarm__time">${alarm}</div>
+                    <button class="alarm__delete--btn"><i class="alarm__delete--icon alarm__icon ion-md-close-circle-outline" alarm='btn'></i></button>
+                  </div>`;
+            
+              getDOM.alarmList.insertAdjacentHTML("beforeend", html);
+            
+          } else if (prep === 'in') {
+            
+            html = `<div class="alarm__item color-${prep}">
+                    <i class="alarm__icon ion-md-alarm"></i>  
+                    <div class="alarm__day">${singleDay}</div>
+                    <div class="alarm__time">${alarm}</div>
+                    <button class="alarm__delete--btn"><i class="alarm__delete--icon alarm__icon ion-md-close-circle-outline" alarm='btn'></i></button>
                   </div>`;
             
             getDOM.alarmList.insertAdjacentHTML("beforeend", html);
-          })
+            
+          }
+
         },
       
-      //https://css-tricks.com/different-approaches-for-creating-a-staggered-animation/
         showAlarmItem: function() {
           const alarmItems = document.querySelectorAll(".alarm__item");
           let counter = 0;
-          
-          console.log(alarmItems.length) // 2
           
           const addToUI = function() {
             if (counter >= alarmItems.length) {
@@ -618,7 +527,6 @@ let UIModule = (function() {
       
         // remove 'active' class from days of the week
         resetAlarmDays: function() {
-          console.log()
           getDOM.weekDays.forEach(el => el.classList.remove('clicked'))
         },
         
@@ -640,11 +548,11 @@ let controllerModule = (function(dataMod, UIMod) {
     let displayedTime;
     let futureTime;
     let alarmWeekDays = [];
-    
+  
+  
     // Get DOM elements from UI Module
     const DOMElements = UIMod.DOMParts();
-    console.log(DOMElements)
-   
+
   
     // set up eventListeners
     const bindEvents = function() {
@@ -664,7 +572,7 @@ let controllerModule = (function(dataMod, UIMod) {
         });
         DOMElements.saveBtn.addEventListener("click", clickSaveAlarm);
         DOMElements.resetBtn.addEventListener("click", clickResetBtn);
-    
+        DOMElements.alarmList.addEventListener('click', clickAlarmItem);
     };
     
     
@@ -702,7 +610,6 @@ let controllerModule = (function(dataMod, UIMod) {
           pubsub.subscribe("selectAtIn", UIMod.getPreposition);
 
           
-          
           // "subscribe" to show AM/PM button 
           pubsub.subscribe("selectAtIn", UIMod.displayAmPmBtn);
 
@@ -723,7 +630,6 @@ let controllerModule = (function(dataMod, UIMod) {
           
           // add font color to 'save' and 'reset' buttons
           pubsub.subscribe('selectAtIn', UIMod.addSaveResetColor);
-          
           
           pubsub.subscribe('selectAtIn', UIMod.resetAlarmDays);
 
@@ -769,19 +675,19 @@ let controllerModule = (function(dataMod, UIMod) {
 
           // Get displayed time as integer
           displayedTime = UIMod.getDisplayedTime(DOMElements.displayTimeBox);
-
+          
           // Calc future wake-up time (either in "at" or "in" mode)
           futureTime = atOrIn === ("input-at") ? dataMod.calcFutureTimeAt(displayedTime, amOrPm) : dataMod.calcFutureTimeIn(displayedTime, amOrPm);
 
           // Display future time
           UIMod.displayFutureTime(futureTime);       
         }
-        
     };
     
     
     // Add class to week days and update "alarmWeekDays" array with selected days 
     const selectWeekDay = function(event) {
+      
       // update 'alarmWeekDays' array
       const alarmDays = dataMod.updateAlarmDays(event);
       
@@ -792,30 +698,60 @@ let controllerModule = (function(dataMod, UIMod) {
     
     // add alarm time to the DOM
     const clickSaveAlarm = function(event) {
+      let alarmTime = atOrIn === "input-at" ? dataMod.calcFutureTimeAt(displayedTime, amOrPm) :
+          dataMod.calcFutureTimeIn(displayedTime, amOrPm);
+      let futureTimeMS = dataMod.getFutureTimeMS();
+      let futureDay = dataMod.getFutureDay();
+      
       // get selected days for alarm
       const alarmDays = dataMod.getAlarmDays();
       
       // Inject alarm item into the DOM
-      UIMod.addAlarmItem(atOrIn, amOrPm, displayedTime, futureTime, alarmDays);
+      UIMod.addAlarmItem(atOrIn, amOrPm, displayedTime, futureTimeMS, alarmDays, futureDay);
       
       // add class to show in the alarm list 
       UIMod.showAlarmItem()
       
-  /*    // reset days of the week 
-      UIMod.resetAlarmDays(DOMElements.weekDays);*/
+      // reset days of the week 
+      UIMod.resetAlarmDays();
+      
+      // remove elements from day array
+      dataMod.resetAlarmArray();
       
     };
     
 
-    //
+    // 'Reset' btn functionalities
     const clickResetBtn = function() {
       // reset days of the week 
       UIMod.resetAlarmDays();
       
+      // reset 'let resetAlarmDays' back to empty array
+      dataMod.resetAlarmArray();
+      
       // reset all displayed times
       UIMod.resetAllTimes();
       
-    }
+    };
+  
+  
+    // add 'alarm__active' class to alarm list item, to show delete button
+    let clickAlarmItem = function(event) {
+      let target = event.target;
+      target.parentElement.classList.toggle('alarm__active');
+      
+      if (target.getAttribute('alarm') === 'btn') {
+        target.parentElement.parentElement.classList.remove('alarm-show');
+        
+        setTimeout(deleteFromDOM, 400)
+        
+        function deleteFromDOM() {
+          target.parentElement.parentElement.remove()
+        }
+      }
+    };
+    
+    
     
     return {
         
