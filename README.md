@@ -1,4 +1,4 @@
-Alarm-clock type app for Mobile - original UI + functionalities
+Alarm-clock type app for mobile devices - original UI + functionalities
 
 A new alarm-clock type app for MOBILE with original, proprietary UI design and functionalities
 The app utilizes:
